@@ -34,7 +34,7 @@ public class QuartzMainTest {
 		Trigger trigger = TriggerBuilder.newTrigger()
 				.withSchedule(
 						//CronScheduleBuilder.cronSchedule("/10 * * * * ?")
-						CronScheduleBuilder.cronSchedule("0 /10 * * * ?")
+						CronScheduleBuilder.cronSchedule("0 0 /10 * * ?")
 						.withMisfireHandlingInstructionDoNothing())
 				.forJob(jobDetail).build();
 		
