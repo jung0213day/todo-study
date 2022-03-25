@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Slf4j
-@EnableBatchProcessing
-@Configuration
+//@EnableBatchProcessing
+//@Configuration
 public class QuartzMainTest {
 	
 	@Bean

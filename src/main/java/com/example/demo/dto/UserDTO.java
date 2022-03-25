@@ -13,7 +13,7 @@ public class UserDTO {
 
 	private String token;
 	private String email;
-	private String username;
+	private String userName;
 	private String id;
 	private String password;
 }
