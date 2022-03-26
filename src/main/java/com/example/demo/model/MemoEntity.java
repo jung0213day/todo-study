@@ -40,7 +40,11 @@ public class MemoEntity {
 	private String regUser;
 
 	private String delYn;
+	
+	private int hits;
 
 	@CreationTimestamp
 	private Date regDate;
+	
+	
 }

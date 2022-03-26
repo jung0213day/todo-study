@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,4 +84,29 @@ public class MemoController {
 		}
 	}
 			
+	
+	@PostMapping
+	public ResponseEntity<?> createMemo(@RequestBody MemoDTO memoDTO){
+		log.info("create Memo");
+		
+		try {
+			
+			MemoEntity memo = MemoDTO.toEntity(memoDTO);
+			memo.setDelYn("N");
+			memo.setRegUser("admin");
+			memo.setHits(0);
+			
+			MemoEntity newMemo = memoService.createMemo(memo);
+			log.info("new memo idx : {}", newMemo.getIdx());
+			
+			ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().build();
+			
+			return ResponseEntity.ok().body(response);
+		
+		}catch (Exception e) {
+			String error = e.getMessage();
+			ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().error(error).build();
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
 }

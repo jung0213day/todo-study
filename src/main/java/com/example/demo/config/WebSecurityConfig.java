@@ -3,10 +3,13 @@ package com.example.demo.config;
 import com.example.demo.security.JwtAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -29,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeRequests() // /와 /auth/** 경로는 인증 안해도 됨.
-						.antMatchers("/", "/auth/**", "/memo/**").permitAll()
+						.antMatchers("/", "/auth/**", "/memo/**", "/proxy/**").permitAll()
 				.anyRequest() // /와 /auth/**이외의 모든 경로는 인증 해야됨.
 						.authenticated();
 
@@ -42,4 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						CorsFilter.class
 		);
 	}
+
+	@Bean
+	public HttpFirewall defaultHttpFirewall() {
+	    return new DefaultHttpFirewall();
+	}
+
 }

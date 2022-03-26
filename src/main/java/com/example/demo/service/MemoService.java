@@ -23,6 +23,11 @@ public class MemoService {
 		log.info("MemoService getList");
 		return memoRepository.findAll();
 	}
+
+	public MemoEntity createMemo(MemoEntity memo) {
+		// TODO Auto-generated method stub
+		return memoRepository.save(memo);
+	}
 	
 
 }

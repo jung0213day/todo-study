@@ -21,12 +21,17 @@ public class MemoDTO {
 	private String img1;
 	private String img2;
 	private String img3;
+	private int hits;
 	private Date regDate;
 	
 	public MemoDTO(final MemoEntity entity) {
 		this.idx = entity.getIdx();
 		this.title = entity.getTitle();
 		this.contents = entity.getContents();
+		this.img1 = entity.getImg1();
+		this.img2 = entity.getImg2();
+		this.img3 = entity.getImg3();
+		this.hits = entity.getHits();
 		this.regDate = entity.getRegDate();
 	}
 	
@@ -35,6 +40,7 @@ public class MemoDTO {
 				.img1(dto.img1)
 				.img2(dto.img2)
 				.img3(dto.img3)
+				.hits(dto.hits)
 				.regDate(dto.regDate).build();
 	}
 	
