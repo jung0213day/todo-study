@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.MemoEntity;
@@ -19,7 +20,7 @@ public class MemoService {
 	@Autowired
 	private MemoRepository memoRepository;
 	
-	public List<MemoEntity> getList() {
+	public List<MemoEntity> getList(Pageable pageable) {
 		log.info("MemoService getList");
 		return memoRepository.findAll();
 	}
@@ -27,6 +28,11 @@ public class MemoService {
 	public MemoEntity createMemo(MemoEntity memo) {
 		// TODO Auto-generated method stub
 		return memoRepository.save(memo);
+	}
+
+	public MemoEntity updateMemo(MemoEntity memo) {
+		// TODO Auto-generated method stub
+		return memoRepository.saveAndFlush(memo);
 	}
 	
 

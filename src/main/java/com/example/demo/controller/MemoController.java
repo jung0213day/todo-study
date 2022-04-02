@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +37,7 @@ public class MemoController {
 	@Autowired
 	private MemoService memoService;
 	
-	@GetMapping
+	@GetMapping("/todo")
 	public ResponseEntity<?> getTodoListAll() {
 		
 		try {
@@ -57,14 +59,14 @@ public class MemoController {
 		}
 	}
 	
-	@GetMapping("/memo")
-	public ResponseEntity<?> getMemoList() {
+	@GetMapping
+	public ResponseEntity<?> getMemoLis(Pageable pageable) {
 		
 		try {
 			
 			log.info("getMemoList start");
 			
-			List<MemoEntity> entities = memoService.getList();
+			List<MemoEntity> entities = memoService.getList(pageable);
 			
 			log.info("list size : {}", entities.size());
 			
@@ -109,4 +111,29 @@ public class MemoController {
 			return ResponseEntity.badRequest().body(response);
 		}
 	}
+	
+	@PutMapping
+	public ResponseEntity<?> updateMemo(@RequestBody MemoDTO memoDTO){
+		
+		try {
+
+			MemoEntity memo = MemoDTO.toEntity(memoDTO);
+			
+			MemoEntity updateMemo = memoService.updateMemo(memo);
+			log.info("new memo idx : {}", updateMemo.getIdx());
+			
+			ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().build();
+			
+			return ResponseEntity.ok().body(response);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			String error = e.getMessage();
+			
+			ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().error(error).build();
+			
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
+	
 }
