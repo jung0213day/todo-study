@@ -1,13 +1,16 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "io.freefair.lombok" version "6.3.0"
 	id 'java'
-	//id 'war'
+	id 'war'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+targetCompatibility = 1.8
+
 
 configurations {
 	compileOnly {
@@ -40,9 +43,15 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
+	
+	//gemfire
+	implementation "org.springframework.data:spring-data-geode"
+	runtimeOnly "org.springframework.shell:spring-shell:1.2.0.RELEASE"
+	compileOnly "org.springframework.boot:spring-boot-starter-data-rest"
+	compileOnly "org.springframework.data:spring-data-rest-webmvc"
 	
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -54,5 +63,7 @@ tasks.named('test') {
 }
 
 bootJar {
+	baseName = 'gs-accessing-data-gemfire'
+	version = '0.1.0'
     destinationDirectory = file("./target")
 }
