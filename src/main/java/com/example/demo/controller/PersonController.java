@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -36,10 +37,22 @@ public class PersonController {
 		ctx.register(GemfireConfiguration.class);
 		ctx.refresh();
 		
+		//Properties gemfireProperties = new Properties();
+		//gemfireProperties.setProperty("test", "test");
+		
 		
 		CacheFactoryBean gemfireCache = (CacheFactoryBean) ctx.getBean(CacheFactoryBean.class);
-		String name2 = (String) gemfireCache.getProperties().get("name");
-		log.info("CacheFactoryBean getProperties name : {}", name2);
+		
+		Properties gemfireProperties  = gemfireCache.getProperties();
+		gemfireCache.setProperties(gemfireProperties);
+		gemfireProperties.setProperty("test", "test");
+		
+		String name1 = (String) gemfireCache.getProperties().get("name");
+		String name2 = (String) gemfireCache.getProperties().get("name2");
+		String test = (String) gemfireCache.getProperties().get("test");
+		
+		log.info("CacheFactoryBean getProperties name : {} / {}", name1 ,name2);
+		log.info("test : {}", test);
 		
 		double dValue = Math.random();
 	    int iValue = (int)(dValue * 10);
@@ -58,6 +71,19 @@ public class PersonController {
 		List<Person> list2 = (List<Person>) personRepository.findAll();
 		for(Person t : list2) {
 			log.info("person >>>"+t.toString());
+		}
+		
+		ResponseDTO<Person> response = ResponseDTO.<Person>builder().data(list2).build();
+		
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@GetMapping("/test2")
+	public ResponseEntity<?> test2(){
+		
+		List<Person> list2 = (List<Person>) personRepository.findAll();
+		for(Person t : list2) {
+			log.info("test2 person >>>"+t.toString());
 		}
 		
 		ResponseDTO<Person> response = ResponseDTO.<Person>builder().data(list2).build();
